@@ -323,24 +323,31 @@ function levelOf(key) {
   if (s.streak >= 3) return 'mastered';
   return 'learning';
 }
-// Čím horšie dieťa príklad vie, tým častejšie príde
-function weightOf(key) {
-  return { new: 3, weak: 5, learning: 2, mastered: 0.5 }[levelOf(key)];
-}
-
 // ===== Výber úloh =====
-function pickSession(mode) {
-  const pool = ALL_FACTS.filter(f => mode === 'mix' || f.kind === mode);
-  const chosen = [];
-  const left = pool.slice();
-  while (chosen.length < SESSION_LEN && left.length) {
-    const total = left.reduce((s, f) => s + weightOf(f.key), 0);
-    let r = Math.random() * total;
-    let i = 0;
-    for (; i < left.length - 1; i++) { r -= weightOf(left[i].key); if (r <= 0) break; }
-    chosen.push(left.splice(i, 1)[0]);
+const MIN_REVIEW = 2; // koľko zvládnutých príkladov sa v kole vždy zopakuje (ak nejaké sú)
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
   }
-  return chosen;
+  return arr;
+}
+function poolFor(mode) {
+  return ALL_FACTS.filter(f => mode === 'mix' || f.kind === mode);
+}
+// Nezvládnuté príklady majú v kole isté miesto (červené, potom žlté, potom sivé),
+// zvyšok doplnia zvládnuté na zopakovanie. Nakoniec sa poradie zamieša.
+function pickSession(mode) {
+  const pool = poolFor(mode);
+  const byLevel = lvl => shuffle(pool.filter(f => levelOf(f.key) === lvl));
+  const mastered = byLevel('mastered');
+  const todo = [...byLevel('weak'), ...byLevel('learning'), ...byLevel('new')];
+  const size = Math.min(SESSION_LEN, pool.length);
+  const todoSlots = Math.min(todo.length, size - Math.min(MIN_REVIEW, mastered.length));
+  const chosen = todo.slice(0, todoSlots);
+  chosen.push(...mastered.slice(0, size - chosen.length));
+  return shuffle(chosen);
 }
 
 // ===== Zvuk =====
@@ -537,7 +544,11 @@ function endGame() {
   $('progressBar').style.width = '100%';
   sndWin();
   const ratio = starCount / total;
-  $('endTitle').textContent = ratio === 1 ? 'Úžasné! Všetko správne!' : ratio >= 0.7 ? 'Výborne!' : 'Dobrá práca!';
+  const allMastered = poolFor(mode).every(f => levelOf(f.key) === 'mastered');
+  const what = { mul: 'Násobenie', div: 'Delenie', mix: 'Násobenie aj delenie' }[mode];
+  $('endTitle').textContent = allMastered
+    ? `🏆 ${what} s číslom ${TABLES.join(', ')} už vieš celé!`
+    : ratio === 1 ? 'Úžasné! Všetko správne!' : ratio >= 0.7 ? 'Výborne!' : 'Dobrá práca!';
   $('endStars').textContent = results.map(r => ({ ok: '⭐', hint: '💡', bad: '☆' })[r]).join('');
   $('endScore').textContent = `${starCount} z ${total} hviezdičiek` +
     (hinted.length ? `, ${hinted.length}× s pomôckou` : '');
