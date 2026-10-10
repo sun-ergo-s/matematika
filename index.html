@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Násobilka a delilka</title>
+<title>Matematika</title>
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="icon" type="image/png" sizes="64x64" href="icons/favicon-64.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -87,13 +87,39 @@
   .big-btn.danger:active { box-shadow: 0 2px 0 #b42d2d; }
   @keyframes fade { from { opacity: 0 } to { opacity: 1 } }
 
-  .modes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  /* --- menu --- */
+  .section-label { font-size: 16px; font-weight: 800; color: var(--muted); margin: 6px 4px -6px; }
+  .topic {
+    display: flex; align-items: center; gap: 14px; width: 100%; text-align: left;
+    background: var(--card); color: var(--ink); border-radius: var(--radius); padding: 16px;
+    box-shadow: 0 6px 0 rgba(0,0,0,.06); transition: transform .08s;
+  }
+  .topic:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.06); }
+  .topic-icon { font-size: 40px; line-height: 1; width: 52px; text-align: center; flex-shrink: 0; }
+  .topic-body { flex: 1; min-width: 0; }
+  .topic-name { font-size: 22px; font-weight: 900; color: var(--primary-dark); }
+  .topic-desc { font-size: 15px; color: var(--muted); margin: 2px 0 8px; }
+  .topic-bar { height: 10px; background: var(--grey-soft); border-radius: 6px; overflow: hidden; }
+  .topic-bar > div { height: 100%; background: var(--ok); border-radius: 6px; }
+  .topic-count { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .back-btn {
+    align-self: flex-start; background: #fff; color: var(--primary-dark); border-radius: 14px;
+    font-size: 17px; font-weight: 800; padding: 10px 16px; box-shadow: 0 4px 0 #e6e0d4;
+  }
+  .back-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #e6e0d4; }
+
+  .modes { display: grid; grid-template-columns: repeat(auto-fit, minmax(72px, 1fr)); gap: 10px; }
   .mode {
+    position: relative;
     padding: 14px 6px; border-radius: 16px; font-size: 18px; font-weight: 800;
     background: var(--grey-soft); color: var(--ink); line-height: 1.2;
   }
   .mode .sym { display: block; font-size: 30px; font-weight: 900; }
   .mode.active { background: var(--primary); color: #fff; }
+  .mode.done::after {
+    content: "✓"; position: absolute; top: -6px; right: -4px; width: 24px; height: 24px; border-radius: 50%;
+    background: var(--ok); color: #fff; font-size: 15px; line-height: 24px; font-weight: 900;
+  }
 
   .grid-label { font-size: 15px; color: var(--muted); margin: 10px 0 6px; }
   .facts { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -120,7 +146,37 @@
 
   .problem-card { text-align: center; padding: 24px 12px; }
   .counter { color: var(--muted); font-size: 16px; margin-bottom: 6px; }
+  .prompt { font-size: 20px; font-weight: 800; color: var(--muted); margin-bottom: 8px; }
+  .pic { display: flex; justify-content: center; margin-bottom: 10px; }
   .problem { font-size: 56px; font-weight: 900; display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
+  .formula { font-size: 26px; font-weight: 900; margin-bottom: 4px; }
+  .problem.mid { font-size: 40px; gap: 10px; }
+  .problem.seq { font-size: 32px; gap: 10px; }
+  .problem.mid .answer, .problem.seq .answer { min-width: 76px; height: 62px; }
+  .d { color: var(--dot-b); }
+  .j { color: var(--dot-a); }
+
+  /* tyčinky (desiatky) a kocky (jednotky) */
+  .blocks { --cell: 12px; display: flex; gap: 16px; align-items: flex-end; justify-content: center; flex-wrap: wrap; }
+  .pic .blocks { --cell: 10px; }
+  .rods { display: flex; gap: 6px; align-items: flex-end; }
+  .rod-wrap { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .rod-lbl { font-size: 12px; font-weight: 800; color: var(--dot-b); }
+  .rod {
+    width: calc(var(--cell) + 3px); height: calc(var(--cell) * 10); border-radius: 3px; background-color: var(--dot-b);
+    background-image: repeating-linear-gradient(to bottom, transparent 0 calc(var(--cell) - 1px), rgba(255,255,255,.6) calc(var(--cell) - 1px) var(--cell));
+  }
+  .cubes-wrap { display: flex; gap: 10px; align-items: flex-end; }
+  .cubes { display: grid; grid-template-columns: repeat(5, calc(var(--cell) - 1px)); gap: 3px; }
+  .cube { width: calc(var(--cell) - 1px); height: calc(var(--cell) - 1px); border-radius: 2px; background: var(--dot-a); }
+  .ten-frame { border: 2px dashed var(--warn); border-radius: 8px; padding: 5px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .ten-cap { font-size: 12px; font-weight: 800; color: #9a6200; }
+
+  /* číselný rad v pomôcke */
+  .seq-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 4px; }
+  .seq-num { background: #f4f1fb; padding: 6px 10px; border-radius: 10px; font-size: 22px; font-weight: 900; }
+  .seq-num.blank { background: var(--warn-soft); color: #9a6200; }
+  .seq-jump { font-size: 15px; font-weight: 900; color: #9a6200; }
   .answer {
     min-width: 110px; height: 80px; padding: 0 14px; border-radius: 18px;
     border: 4px dashed #cfc7e8; display: inline-flex; align-items: center; justify-content: center;
@@ -147,6 +203,10 @@
   .group { display: flex; flex-wrap: wrap; gap: 4px; padding: 7px; border-radius: 12px; background: #f4f1fb; max-width: 120px; justify-content: center; }
   .dot { width: 16px; height: 16px; border-radius: 50%; background: var(--dot-b); }
   .group:nth-child(even) .dot { background: var(--dot-a); }
+  /* v zadaní sú skupiny stĺpčeky vedľa seba, aby sa zmestili do jedného riadku */
+  .pic .groups { flex-wrap: nowrap; gap: 10px; }
+  .pic .group { flex-direction: column; flex-wrap: nowrap; padding: 6px; }
+  .pic .dot { width: 12px; height: 12px; }
 
   .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: auto; }
   .key {
@@ -157,15 +217,48 @@
   .key.del { background: var(--bad-soft); color: #b42d2d; box-shadow: 0 5px 0 #f3bcbc; }
   .key.go { background: var(--ok); color: #fff; box-shadow: 0 5px 0 #138a50; }
   .key.go.next { background: var(--primary); box-shadow: 0 5px 0 var(--primary-dark); font-size: 26px; }
+  /* porovnávanie: namiesto číslic znaky < = > */
+  .key.sym { display: none; font-size: 40px; color: var(--primary-dark); }
+  .keypad.cmp .key.num { display: none; }
+  .keypad.cmp .key.sym { display: block; }
+  .keypad.cmp .key.go { grid-column: 3; }
+
+  /* teória */
+  .theory { background: var(--warn-soft); }
+  .theory h2 { color: #9a6200; }
+  .theory p { margin: 0 0 10px; font-size: 17px; }
+  .theory .formula { font-size: 26px; font-weight: 900; text-align: center; margin: 8px 0; }
+  .theory .rule { font-weight: 900; font-size: 18px; color: var(--primary-dark); }
+  .theory .groups { margin: 8px 0; }
+  .pair { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; font-size: 26px; font-weight: 900; }
+  .names { display: flex; justify-content: center; gap: 18px; font-size: 14px; color: var(--muted); margin-top: -4px; }
+  .loose { display: grid; gap: 4px; padding: 7px; border-radius: 12px; background: #f4f1fb; }
+  .pic .pair { gap: 8px; flex-wrap: nowrap; }
+  .pic .group:empty { width: 26px; height: 26px; }
+  .pic .groups:has(.group:empty) { gap: 6px; }
+  .group:empty { width: 36px; height: 36px; border: 2px dashed #d9d3ef; background: none; }
 
   /* --- koniec --- */
-  .end-stars { font-size: 46px; text-align: center; letter-spacing: 2px; line-height: 1.3; }
+  .end-stars { font-size: 46px; text-align: center; letter-spacing: 2px; line-height: 1.3; overflow-wrap: anywhere; }
   .end-score { text-align: center; font-size: 26px; font-weight: 900; }
   .mistakes { display: flex; flex-wrap: wrap; gap: 8px; }
   .mistake { background: var(--warn-soft); color: #9a6200; padding: 6px 10px; border-radius: 12px; font-weight: 800; font-size: 18px; }
 
+  @media (max-width: 380px) {
+    .problem { font-size: 48px; }
+    .answer { min-width: 90px; }
+    .problem.mid { font-size: 34px; }
+    .problem.seq { font-size: 28px; }
+  }
+  @media (max-height: 820px) {
+    .key { height: 58px; }
+    .problem-card { padding: 16px 12px; }
+    .feedback { margin-top: 8px; }
+  }
   @media (max-height: 700px) {
     .problem { font-size: 44px; }
+    .problem.mid { font-size: 36px; }
+    .problem.seq { font-size: 28px; }
     .answer { height: 64px; min-width: 90px; }
     .key { height: 56px; font-size: 28px; }
     .problem-card { padding: 16px 10px; }
@@ -175,28 +268,35 @@
 <body>
 <main id="app">
 
-  <!-- ÚVOD -->
-  <section id="home" class="screen">
-    <h1>Násobilka a delilka</h1>
-    <p class="sub">s číslom <b id="tableLabel">2</b></p>
+  <!-- MENU -->
+  <section id="menu" class="screen">
+    <h1>Matematika</h1>
+    <p class="sub">pre 3. ročník</p>
+    <div id="topicList" class="screen"></div>
+    <button class="reset-btn" id="resetBtn">🗑️ Vymazať pamäť</button>
+  </section>
+
+  <!-- TÉMA -->
+  <section id="home" class="screen hidden">
+    <button class="back-btn" id="menuBtn">◀ Všetky cvičenia</button>
+    <h1 id="topicTitle"></h1>
+    <p class="sub" id="topicSub"></p>
 
     <div class="card">
       <h2>Čo budeme cvičiť?</h2>
-      <div class="modes">
-        <button class="mode" data-mode="mul"><span class="sym">·</span>Násobenie</button>
-        <button class="mode" data-mode="div"><span class="sym">:</span>Delenie</button>
-        <button class="mode active" data-mode="mix"><span class="sym">· :</span>Všetko</button>
-      </div>
+      <div class="modes" id="modes"></div>
+    </div>
+
+    <div class="card theory hidden" id="theoryCard">
+      <h2>📘 Zapamätaj si!</h2>
+      <div id="theory"></div>
     </div>
 
     <button class="big-btn" id="startBtn">Začať ▶</button>
 
     <div class="card">
       <h2>Čo už vieš</h2>
-      <div class="grid-label">Násobenie</div>
-      <div class="facts" id="factsMul"></div>
-      <div class="grid-label">Delenie</div>
-      <div class="facts" id="factsDiv"></div>
+      <div id="factGroups"></div>
       <div class="legend">
         <span class="l-new">ešte nebolo</span>
         <span class="l-learning">učím sa</span>
@@ -205,8 +305,6 @@
         <span class="l-hint">💡 s pomôckou</span>
       </div>
     </div>
-
-    <button class="reset-btn" id="resetBtn">🗑️ Vymazať pamäť</button>
   </section>
 
   <!-- HRA -->
@@ -220,29 +318,35 @@
 
     <div class="card problem-card">
       <div class="counter" id="counter">Úloha 1 z 10</div>
+      <div class="prompt hidden" id="prompt"></div>
+      <div class="pic hidden" id="pic"></div>
+      <div class="formula hidden" id="formula"></div>
       <div class="problem" id="problem">
-        <span id="qText">2 · 3</span><span>=</span><span class="answer empty" id="answer"></span>
+        <span class="answer empty" id="answer"></span>
       </div>
       <div class="feedback" id="feedback"></div>
       <button class="hint-btn" id="hintBtn">💡 Pomôcka</button>
       <div class="hint hidden" id="hint">
         <div class="hint-text" id="hintText"></div>
-        <div class="groups" id="groups"></div>
+        <div id="hintBody"></div>
       </div>
     </div>
 
     <div class="keypad" id="keypad">
-      <button class="key" data-k="1">1</button>
-      <button class="key" data-k="2">2</button>
-      <button class="key" data-k="3">3</button>
-      <button class="key" data-k="4">4</button>
-      <button class="key" data-k="5">5</button>
-      <button class="key" data-k="6">6</button>
-      <button class="key" data-k="7">7</button>
-      <button class="key" data-k="8">8</button>
-      <button class="key" data-k="9">9</button>
+      <button class="key num" data-k="1">1</button>
+      <button class="key num" data-k="2">2</button>
+      <button class="key num" data-k="3">3</button>
+      <button class="key num" data-k="4">4</button>
+      <button class="key num" data-k="5">5</button>
+      <button class="key num" data-k="6">6</button>
+      <button class="key num" data-k="7">7</button>
+      <button class="key num" data-k="8">8</button>
+      <button class="key num" data-k="9">9</button>
+      <button class="key sym" data-k="<">&lt;</button>
+      <button class="key sym" data-k="=">=</button>
+      <button class="key sym" data-k=">">&gt;</button>
       <button class="key del" data-k="del">⌫</button>
-      <button class="key" data-k="0">0</button>
+      <button class="key num" data-k="0">0</button>
       <button class="key go" data-k="go" id="goKey">✓</button>
     </div>
   </section>
@@ -263,7 +367,7 @@
       <div class="mistakes" id="hintedList"></div>
     </div>
     <button class="big-btn" id="againBtn">Hrať znova ▶</button>
-    <button class="big-btn secondary" id="endHomeBtn">🏠 Domov</button>
+    <button class="big-btn secondary" id="endHomeBtn">◀ Späť</button>
   </section>
 
 </main>
@@ -282,20 +386,75 @@
 
 <script>
 // ===== Nastavenia =====
-// Keď príde na rad ďalšie číslo, stačí ho pridať sem, napr. [2, 3].
+// Keď príde na rad ďalšie číslo násobilky, stačí ho pridať sem, napr. [2, 3].
 const TABLES = [2];
 const SESSION_LEN = 10;
 const STORE_KEY = 'matematika.stats.v1';
 
 const PRAISE = ['Výborne!', 'Super!', 'Paráda!', 'Správne!', 'Si jednotka!', 'Bravó!', 'Presne tak!'];
 
-// ===== Príklady =====
+// ===== Pomocné =====
+const $ = id => document.getElementById(id);
+function el(tag, cls, text) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text !== undefined) e.textContent = text;
+  return e;
+}
+function show(screen) {
+  ['menu', 'home', 'game', 'end'].forEach(s => $(s).classList.toggle('hidden', s !== screen));
+}
+function plural(n, one, few, many) {
+  if (n === 1) return one;
+  if (n >= 2 && n <= 4) return few;
+  return many;
+}
+function restartAnim(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+
+// Značka miesta pre políčko s odpoveďou v zadaní úlohy
+const ANS = {};
+// Desiatky a jednotky farebne ako tyčinky a kocky na obrázku
+const D = '<b class="d">D</b>', J = '<b class="j">J</b>';
+
+// ===== Témy =====
+// Každá téma má:
+//   modes  – kroky v poradí, v akom sa učia (posledný je „Všetko“ s id 'mix')
+//   facts  – príklady { key, kind, ans, label, solved, … }; kind = id kroku
+//   view(f) – ako vyzerá zadanie: { prompt?, pic?, parts: [html | ANS], size? }
+//   hint(f) – pomôcka: { text, node }
+// Pokrok sa ukladá podľa f.key, preto musia byť kľúče jedinečné naprieč témami.
+
+// count skupín po size guličkách (prázdna skupina = prázdny tanier)
+function dotGroups(count, size) {
+  const groups = el('div', 'groups');
+  for (let g = 0; g < count; g++) {
+    const grp = el('div', 'group');
+    for (let d = 0; d < size; d++) grp.appendChild(el('div', 'dot'));
+    groups.appendChild(grp);
+  }
+  return groups;
+}
+// Teória: pole riadkov [trieda, html] alebo hotových prvkov
+function theory(rows) {
+  const box = el('div');
+  rows.forEach(r => {
+    if (r instanceof Node) { box.appendChild(r); return; }
+    const p = el(r[0] === 'formula' || r[0] === 'pair' || r[0] === 'names' ? 'div' : 'p', r[0]);
+    p.innerHTML = r[1];
+    box.appendChild(p);
+  });
+  return box;
+}
+
+// --- Násobilka a delilka ---
 // Pre číslo k vytvorí: k·n, n·k, (k·n):k a (k·n):n pre n = 1..10
-function buildFacts(k) {
+function buildMulFacts(k) {
   const facts = [];
   const add = (a, op, b, ans, kind) => {
     const key = `${a}${op}${b}`;
-    if (!facts.some(f => f.key === key)) facts.push({ key, a, op, b, ans, kind });
+    if (facts.some(f => f.key === key)) return;
+    const label = `${a} ${op} ${b}`;
+    facts.push({ key, a, op, b, ans, kind, label, solved: `${label} = ${ans}` });
   };
   for (let n = 1; n <= 10; n++) {
     const p = k * n;
@@ -306,7 +465,516 @@ function buildFacts(k) {
   }
   return facts;
 }
-const ALL_FACTS = TABLES.flatMap(buildFacts);
+
+const NASOB = {
+  id: 'nasob',
+  icon: '✖️',
+  title: 'Násobilka a delilka',
+  desc: `s číslom ${TABLES.join(', ')}`,
+  modes: [
+    { id: 'mul', sym: '·', name: 'Násobenie' },
+    { id: 'div', sym: ':', name: 'Delenie' },
+    { id: 'mix', sym: '· :', name: 'Všetko' },
+  ],
+  defaultMode: 'mix',
+  facts: TABLES.flatMap(buildMulFacts),
+  trophy(mode) {
+    const what = { mul: 'Násobenie', div: 'Delenie', mix: 'Násobenie aj delenie' }[mode];
+    return `${what} s číslom ${TABLES.join(', ')} už vieš celé!`;
+  },
+  view: f => ({ parts: [f.label, '=', ANS] }),
+  hint(f) {
+    let count, size, text;
+    if (f.op === '·') {
+      count = f.a; size = f.b;
+      text = `${f.a} ${plural(f.a, 'skupina', 'skupiny', 'skupín')} po ${f.b}. Koľko je to spolu?`;
+    } else {
+      count = f.b; size = f.a / f.b;
+      text = f.b === 1
+        ? `${f.a} ${plural(f.a, 'gulička', 'guličky', 'guličiek')} v 1 skupine. Koľko ich je v nej?`
+        : `Rozdeľ ${f.a} ${plural(f.a, 'guličku', 'guličky', 'guličiek')} do ${f.b} rovnakých skupín. Koľko je v jednej?`;
+    }
+    return { text, node: dotGroups(count, size) };
+  },
+};
+
+// --- Desiatky a jednotky (učebnica, Zopakuj si, úloha 3) ---
+// Postup: 1. obrázok → číslo, 2. číslo → koľko desiatok / jednotiek, 3. zápis D a J → číslo
+// (aj s výmenou 10 jednotiek za desiatku a s jednotkami napísanými ako prvé).
+const DJ_PIC = [13, 20, 26, 31, 38, 40, 45, 50, 57, 62, 64, 70, 79, 83, 86, 91, 19, 98];
+const DJ_SPLIT = [38, 7, 40, 19, 91, 36, 63, 55, 80, 12, 74, 99];
+const DJ_BUILD = [[3, 8], [4, 7], [6, 0], [1, 9], [9, 1], [5, 5], [7, 2], [2, 6]];
+const DJ_SWAP = [[2, 15], [1, 12], [3, 10], [4, 13], [5, 11], [6, 14]];  // viac ako 9 jednotiek
+const DJ_REV = [[3, 8], [5, 2], [9, 1]];                                 // najprv jednotky, potom desiatky
+
+function buildDJFacts() {
+  const facts = [];
+  DJ_PIC.forEach(n => {
+    const d = Math.floor(n / 10), j = n % 10;
+    facts.push({ key: `dj:obr:${n}`, kind: 'obr', d, j, ans: n, label: `🧱 ${n}`, solved: `${d} D ${j} J = ${n}` });
+  });
+  DJ_SPLIT.forEach(n => {
+    const d = Math.floor(n / 10), j = n % 10;
+    const solved = `${n} = ${d} D ${j} J`;
+    facts.push({ key: `dj:d:${n}`, kind: 'roz', part: 'd', n, d, j, ans: d, label: `${n} → D`, solved });
+    facts.push({ key: `dj:j:${n}`, kind: 'roz', part: 'j', n, d, j, ans: j, label: `${n} → J`, solved });
+  });
+  [...DJ_BUILD, ...DJ_SWAP].forEach(([d, j]) => {
+    const ans = d * 10 + j;
+    facts.push({ key: `dj:zap:${d},${j}`, kind: 'zap', d, j, ans, label: `${d}D ${j}J`, solved: `${d} D ${j} J = ${ans}` });
+  });
+  DJ_REV.forEach(([d, j]) => {
+    const ans = d * 10 + j;
+    facts.push({ key: `dj:zapr:${d},${j}`, kind: 'zap', rev: true, d, j, ans, label: `${j}J ${d}D`, solved: `${j} J ${d} D = ${ans}` });
+  });
+  return facts;
+}
+
+// Obrázok: d tyčiniek po 10 a j kociek. Ak je kociek viac ako 9, prvých 10 je v rámčeku „10 J = 1 D“.
+// labels: nad tyčinkami sa počíta po desiatkach (10, 20, 30 …).
+function blocks(d, j, labels = false) {
+  const wrap = el('div', 'blocks');
+  if (d) {
+    const rods = el('div', 'rods');
+    for (let i = 0; i < d; i++) {
+      const rw = el('div', 'rod-wrap');
+      if (labels) rw.appendChild(el('div', 'rod-lbl', (i + 1) * 10));
+      rw.appendChild(el('div', 'rod'));
+      rods.appendChild(rw);
+    }
+    wrap.appendChild(rods);
+  }
+  if (j) {
+    const cw = el('div', 'cubes-wrap');
+    const cubes = n => {
+      const g = el('div', 'cubes');
+      for (let i = 0; i < n; i++) g.appendChild(el('div', 'cube'));
+      return g;
+    };
+    let rest = j;
+    if (j >= 10) {
+      const fr = el('div', 'ten-frame');
+      fr.appendChild(el('div', 'ten-cap', '10 J = 1 D'));
+      fr.appendChild(cubes(10));
+      cw.appendChild(fr);
+      rest -= 10;
+    }
+    if (rest) cw.appendChild(cubes(rest));
+    wrap.appendChild(cw);
+  }
+  return wrap;
+}
+
+const DJ = {
+  id: 'dj',
+  icon: '🧱',
+  title: 'Desiatky a jednotky',
+  desc: 'Z koľkých desiatok a jednotiek je číslo?',
+  modes: [
+    { id: 'obr', sym: '1', name: 'Obrázok' },
+    { id: 'roz', sym: '2', name: 'Rozklad' },
+    { id: 'zap', sym: '3', name: 'Zápis' },
+    { id: 'mix', sym: '1–3', name: 'Všetko' },
+  ],
+  progressive: true,
+  facts: buildDJFacts(),
+  view(f) {
+    if (f.kind === 'obr') return { prompt: 'Aké číslo je na obrázku?', pic: blocks(f.d, f.j), parts: ['=', ANS], size: 'mid' };
+    if (f.kind === 'roz') return f.part === 'd'
+      ? { prompt: 'Koľko desiatok má toto číslo?', parts: [`${f.n} =`, ANS, D, `${f.j} ${J}`], size: 'mid' }
+      : { prompt: 'Koľko jednotiek má toto číslo?', parts: [`${f.n} =`, `${f.d} ${D}`, ANS, J], size: 'mid' };
+    const written = f.rev ? `${f.j} ${J} ${f.d} ${D}` : `${f.d} ${D} ${f.j} ${J}`;
+    return { prompt: 'Aké je to číslo?', parts: [written, '=', ANS], size: 'mid' };
+  },
+  hint(f) {
+    if (f.kind === 'obr') return {
+      text: 'Tyčinky počítaj po desiatkach (10, 20, 30 …), potom pridávaj kocky po jednej.',
+      node: blocks(f.d, f.j, true),
+    };
+    if (f.kind === 'roz') return {
+      text: (f.part === 'd' ? 'Každá tyčinka je 1 desiatka. Koľko je tyčiniek?' : 'Každá kocka je 1 jednotka. Koľko je kociek?') +
+        ' Keď nie je žiadna, je to 0.',
+      node: blocks(f.d, f.j),
+    };
+    const text = f.j >= 10 ? '10 jednotiek je 1 desiatka! Pridaj ju k ostatným desiatkam.'
+      : f.rev ? 'Pozor, jednotky sú napísané prvé. V čísle sú desiatky vždy na prvom mieste, jednotky na druhom.'
+      : 'V čísle sú desiatky na prvom mieste, jednotky na druhom.';
+    return { text, node: blocks(f.d, f.j, f.j < 10) };
+  },
+};
+
+// --- Číselné rady (učebnica, Zopakuj si, úloha 8) ---
+// Rad má 5 čísel. [začiatok, krok, ktoré číslo chýba (0–4)]
+// Postup: dopredu po 1, 2, 5, 10 → dozadu → ťažšie kroky (3, 4 a 5 nie od násobku 5).
+const RAD = {
+  dop: [
+    [6, 1, 2], [37, 1, 3], [55, 1, 1], [86, 1, 4],
+    [2, 2, 2], [11, 2, 3], [24, 2, 1], [56, 2, 4],
+    [5, 5, 2], [15, 5, 3], [30, 5, 1], [65, 5, 0],
+    [10, 10, 2], [20, 10, 4], [7, 10, 2], [34, 10, 1],
+  ],
+  doz: [
+    [10, -1, 2], [43, -1, 3], [62, -1, 4], [20, -1, 1],
+    [20, -2, 2], [31, -2, 3], [50, -2, 1], [17, -2, 4],
+    [50, -5, 2], [100, -5, 1], [45, -5, 3], [85, -5, 0],
+    [90, -10, 2], [100, -10, 4], [96, -10, 2], [53, -10, 1],
+  ],
+  taz: [
+    [3, 3, 2], [20, 3, 3], [41, 3, 1],
+    [4, 4, 2], [10, 4, 3], [33, 4, 4],
+    [30, -3, 2], [50, -3, 3],
+    [40, -4, 2], [70, -4, 4],
+    [3, 5, 2], [52, 5, 3],
+  ],
+};
+
+function buildRadFacts() {
+  const facts = [];
+  Object.entries(RAD).forEach(([kind, list]) => list.forEach(([start, step, blank]) => {
+    const seq = [0, 1, 2, 3, 4].map(i => start + i * step);
+    facts.push({
+      key: `rad:${start}${step > 0 ? '+' : ''}${step}@${blank}`, kind, seq, step, blank, ans: seq[blank],
+      label: seq.map((n, i) => i === blank ? '_' : n).join(' '),
+      solved: seq.join(', '),
+    });
+  }));
+  return facts;
+}
+
+const RADY = {
+  id: 'rad',
+  icon: '🔢',
+  title: 'Číselné rady',
+  desc: 'Aké číslo v rade chýba?',
+  modes: [
+    { id: 'dop', sym: '+', name: 'Dopredu' },
+    { id: 'doz', sym: '−', name: 'Dozadu' },
+    { id: 'taz', sym: '★', name: 'Ťažšie' },
+    { id: 'mix', sym: '± ★', name: 'Všetko' },
+  ],
+  progressive: true,
+  facts: buildRadFacts(),
+  view: f => ({
+    prompt: 'Doplň číslo, ktoré v rade chýba.',
+    parts: f.seq.map((n, i) => i === f.blank ? ANS : String(n)),
+    size: 'seq',
+  }),
+  hint(f) {
+    const s = Math.abs(f.step), sign = f.step > 0 ? '+' : '−';
+    const row = el('div', 'seq-row');
+    f.seq.forEach((n, i) => {
+      if (i) row.appendChild(el('span', 'seq-jump', `${sign}${s}`));
+      row.appendChild(i === f.blank ? el('span', 'seq-num blank', '?') : el('span', 'seq-num', n));
+    });
+    let text = `Každé ďalšie číslo je o ${s} ${f.step > 0 ? 'väčšie' : 'menšie'}.`;
+    if (f.blank === 0) text += ` Na začiatku choď späť: ${f.seq[1]} ${f.step > 0 ? '−' : '+'} ${s}.`;
+    return { text, node: row };
+  },
+};
+
+// --- Úvod do násobenia (učebnica s. 8–11) ---
+// Postup: 1. skupiny na obrázku → sčítanie → násobenie, 2. sčítanie rovnakých čísel zapísať násobením,
+// 3. výmena činiteľov a porovnávanie súčinov, 4. násobenie 0, 1 a 10.
+// sum(3, 7) = "7 + 7 + 7"; dlhé súčty sa skrátia
+function sum(c, v, short = false) {
+  if (c > (short ? 3 : 7)) return `${v} + ${v} + … + ${v} (${c}-krát)`;
+  return Array(c).fill(v).join(' + ');
+}
+const UV_GROUPS = [[2, 2], [3, 2], [4, 2], [5, 2], [2, 3], [3, 3], [4, 3], [5, 3],
+                   [2, 4], [3, 4], [4, 4], [5, 4], [2, 5], [3, 5], [4, 5], [5, 5]];
+const UV_SUM = [[3, 7], [7, 2], [2, 6], [4, 3], [3, 9], [5, 4]];          // [koľkokrát, číslo]
+const UV_SWAP = [[3, 2], [5, 4], [9, 1], [2, 6], [4, 3], [10, 5], [7, 8], [6, 9]];
+const UV_CMP = [[[1, 9], [9, 1]], [[8, 2], [2, 8]], [[2, 6], [4, 3]], [[5, 4], [4, 2]],
+                [[3, 3], [3, 5]], [[2, 9], [3, 4]], [[3, 5], [5, 3]], [[10, 5], [5, 10]],
+                [[2, 3], [2, 5]], [[4, 3], [4, 2]], [[2, 7], [7, 2]], [[2, 4], [3, 3]]];
+const UV_ZERO_ONE_TEN = [[6, 1], [3, 1], [9, 1], [1, 7], [1, 4],
+                         [4, 0], [8, 0], [2, 0], [0, 6], [0, 9],
+                         [2, 10], [5, 10], [8, 10], [3, 10], [10, 4], [10, 7]];
+
+function buildUvodFacts() {
+  const facts = [];
+  UV_GROUPS.forEach(([a, b]) => facts.push({
+    key: `un:sk:${a}x${b}`, kind: 'sk', a, b, ans: a * b,
+    label: `${a} po ${b}`, solved: `${a} · ${b} = ${sum(a, b)} = ${a * b}`,
+  }));
+  UV_SUM.forEach(([c, v]) => {
+    const solved = `${sum(c, v)} = ${c} · ${v}`;
+    facts.push({ key: `un:sn:c:${c},${v}`, kind: 'sn', blank: 'c', c, v, ans: c, label: `${sum(c, v, true)} = ? · ${v}`, solved });
+    facts.push({ key: `un:sn:v:${c},${v}`, kind: 'sn', blank: 'v', c, v, ans: v, label: `${sum(c, v, true)} = ${c} · ?`, solved });
+  });
+  UV_SWAP.forEach(([a, b], i) => facts.push({
+    key: `un:vy:${a},${b}`, kind: 'vy', a, b, left: i % 2 === 0, ans: i % 2 === 0 ? b : a,
+    label: i % 2 === 0 ? `${a}·${b} = ?·${a}` : `${a}·${b} = ${b}·?`, solved: `${a} · ${b} = ${b} · ${a}`,
+  }));
+  UV_CMP.forEach(([l, r]) => {
+    const pl = l[0] * l[1], pr = r[0] * r[1];
+    const ans = pl < pr ? '<' : pl > pr ? '>' : '=';
+    const L = `${l[0]} · ${l[1]}`, R = `${r[0]} · ${r[1]}`;
+    facts.push({ key: `un:po:${l.join('·')}|${r.join('·')}`, kind: 'vy', input: 'cmp', l, r, ans,
+      label: `${L} ? ${R}`, solved: `${L} ${ans} ${R}` });
+  });
+  UV_ZERO_ONE_TEN.forEach(([a, b]) => facts.push({
+    key: `un:k:${a}·${b}`, kind: 'k', a, b, ans: a * b, label: `${a} · ${b}`, solved: `${a} · ${b} = ${a * b}`,
+  }));
+  return facts;
+}
+
+const UVOD = {
+  id: 'uvod',
+  icon: '🐓',
+  title: 'Úvod do násobenia',
+  desc: 'Násobenie je sčítanie rovnakých čísel.',
+  modes: [
+    { id: 'sk', sym: '1', name: 'Skupiny', theory: () => theory([
+      ['', 'Jeden kohút má 2 nohy. Koľko nôh majú spolu 3 kohúty?'],
+      dotGroups(3, 2),
+      ['formula', '2 + 2 + 2 = 6'],
+      ['formula', '3 · 2 = 6'],
+      ['', 'Čítame: <b>trikrát dva rovná sa šesť</b>. Tri kohúty majú spolu 6 nôh.'],
+      ['rule', 'Násobenie je sčítanie rovnakých čísel.'],
+    ]) },
+    { id: 'sn', sym: '2', name: 'Sčítanie', theory: () => theory([
+      ['', 'Koľkokrát sčítame to isté číslo, toľkokrát ho násobíme.'],
+      ['formula', '7 + 7 + 7 = 3 · 7'],
+      ['', 'Číslo 7 sčítame <b>3-krát</b>, preto píšeme <b>3 · 7</b>.'],
+      ['formula', '4 + 4 = 2 · 4'],
+      ['rule', 'Prvé číslo hovorí, koľkokrát. Druhé číslo hovorí, čo sčítame.'],
+    ]) },
+    { id: 'vy', sym: '3', name: 'Výmena', theory: () => {
+      const pair = el('div', 'pair');
+      pair.appendChild(dotGroups(3, 2));
+      pair.appendChild(el('span', '', '='));
+      pair.appendChild(dotGroups(2, 3));
+      return theory([
+        pair,
+        ['formula', '3 · 2 = 6 &nbsp;&nbsp; 2 · 3 = 6'],
+        ['names', '<span>činiteľ</span><span>·</span><span>činiteľ</span><span>=</span><span>súčin</span>'],
+        ['rule', 'Poradie činiteľov môžeme vymeniť, súčin sa nezmení.'],
+        ['formula', 'a · b = b · a'],
+        ['', 'Pri porovnávaní píš znak <b>&lt;</b> (menší), <b>&gt;</b> (väčší) alebo <b>=</b> (rovná sa).'],
+      ]);
+    } },
+    { id: 'k', sym: '4', name: '0, 1, 10', theory: () => theory([
+      ['rule', 'Krát 1: výsledok je to isté číslo.'],
+      ['formula', '6 · 1 = 6 &nbsp;&nbsp; 1 · 4 = 4'],
+      ['rule', 'Krát 0: výsledok je vždy 0.'],
+      ['formula', '4 · 0 = 0 &nbsp;&nbsp; 0 · 9 = 0'],
+      ['rule', 'Krát 10: k číslu pripíšeme nulu.'],
+      ['formula', '3 · 10 = 30 &nbsp;&nbsp; 10 · 7 = 70'],
+    ]) },
+    { id: 'mix', sym: '1–4', name: 'Všetko' },
+  ],
+  progressive: true,
+  facts: buildUvodFacts(),
+  trophy: m => m === 'mix' ? 'Úvod do násobenia už vieš! Môžeš ísť na násobilku.' : null,
+  view(f) {
+    if (f.kind === 'sk') return {
+      prompt: `${f.a} ${plural(f.a, 'skupina', 'skupiny', 'skupín')} po ${f.b}. Koľko je spolu?`,
+      pic: dotGroups(f.a, f.b),
+      formula: `${f.a} · ${f.b} = ${sum(f.a, f.b)}`,
+      parts: ['=', ANS], size: 'mid',
+    };
+    if (f.kind === 'sn') return f.blank === 'c'
+      ? { prompt: 'Koľkokrát sčítame to isté číslo?', formula: sum(f.c, f.v), parts: ['=', ANS, `· ${f.v}`], size: 'mid' }
+      : { prompt: 'Aké číslo sčítame?', formula: sum(f.c, f.v), parts: ['=', `${f.c} ·`, ANS], size: 'mid' };
+    if (f.input === 'cmp') return {
+      prompt: 'Porovnaj: napíš <, > alebo =.', parts: [`${f.l[0]} · ${f.l[1]}`, ANS, `${f.r[0]} · ${f.r[1]}`], size: 'mid',
+    };
+    if (f.kind === 'vy') return {
+      prompt: 'Doplň chýbajúci činiteľ.',
+      parts: f.left ? [`${f.a} · ${f.b} =`, ANS, `· ${f.a}`] : [`${f.a} · ${f.b} =`, `${f.b} ·`, ANS], size: 'mid',
+    };
+    return { parts: [`${f.a} · ${f.b}`, '=', ANS] };
+  },
+  hint(f) {
+    if (f.kind === 'sk') {
+      const text = f.a > 2 ? `Pripočítavaj po ${f.b}: ${f.b}, ${2 * f.b} …` : 'Spočítaj guličky v oboch skupinách.';
+      return { text, node: dotGroups(f.a, f.b) };
+    }
+    if (f.kind === 'sn') return f.blank === 'c'
+      ? { text: `Spočítaj, koľko je tam čísel ${f.v}.`, node: dotGroups(f.c, f.v) }
+      : { text: `Ktoré číslo sa v súčte opakuje?`, node: dotGroups(f.c, f.v) };
+    if (f.input === 'cmp') {
+      const box = el('div', 'seq-row');
+      box.style.flexDirection = 'column';
+      [f.l, f.r].forEach(([a, b]) => box.appendChild(el('div', 'seq-num', `${a} · ${b} = ${sum(a, b, true)}`)));
+      return { text: 'Sú to tie isté činitele, len vymenené? Potom je súčin rovnaký. Inak vypočítaj obe strany.', node: box };
+    }
+    if (f.kind === 'vy') return {
+      text: 'Poradie činiteľov môžeme vymeniť, súčin sa nezmení.',
+      node: f.a * f.b <= 24 ? (() => {
+        const pair = el('div', 'pair');
+        pair.appendChild(dotGroups(f.a, f.b));
+        pair.appendChild(el('span', '', '='));
+        pair.appendChild(dotGroups(f.b, f.a));
+        return pair;
+      })() : null,
+    };
+    // 0, 1, 10
+    const [a, b] = [f.a, f.b];
+    if (a === 0 || b === 0) return {
+      text: a === 0 ? `0 skupín po ${b} – nemáme nič.` : `${a} ${plural(a, 'prázdny tanier', 'prázdne taniere', 'prázdnych tanierov')} – koľko je na nich spolu?`,
+      node: a === 0 ? null : dotGroups(a, 0),
+    };
+    if (b === 1) return { text: `${a} ${plural(a, 'skupina', 'skupiny', 'skupín')} po 1 guličke.`, node: dotGroups(a, 1) };
+    if (a === 1) return { text: `1 skupina po ${b}.`, node: dotGroups(1, b) };
+    const n = a === 10 ? b : a;
+    return {
+      text: (a === 10 ? `Vymeň činitele: 10 · ${b} = ${b} · 10. ` : '') + `${n} ${plural(n, 'šnúrka', 'šnúrky', 'šnúrok')} po 10 korálikoch.`,
+      node: blocks(n, 0, true),
+    };
+  },
+};
+
+// --- Úvod do delenia (učebnica s. 12–14) ---
+// Postup: 1. rozdeľ na rovnaké časti (koľko je v jednej), 2. rozdeľ po (koľko skupín vznikne),
+// 3. súvislosť násobenia a delenia, 4. delenie 0, 1 a 10.
+// Príbehy z učebnice; tvary slov sú pripravené pre vety v zadaní.
+const UD_CTX = [
+  { item: n => plural(n, 'cukrík', 'cukríky', 'cukríkov'), itemGen: 'cukríkov', cont: 'tanierikov',
+    inEach: 'na každom tanieriku', putEach: 'Na každý tanierik' },
+  { item: n => plural(n, 'ceruzku', 'ceruzky', 'ceruziek'), itemGen: 'ceruziek', cont: 'peračníkov',
+    inEach: 'v každom peračníku', putEach: 'Do každého peračníka' },
+  { item: n => plural(n, 'jablko', 'jablká', 'jabĺk'), itemGen: 'jabĺk', cont: 'košíkov',
+    inEach: 'v každom košíku', putEach: 'Do každého košíka' },
+];
+const UD_SHARE = [[8, 2], [12, 3], [10, 5], [6, 2], [15, 3], [12, 4], [20, 5], [9, 3], [16, 4], [10, 2], [14, 2], [18, 3]]; // [spolu, do koľkých]
+const UD_MEASURE = [[12, 4], [10, 5], [8, 2], [15, 5], [12, 3], [18, 6], [14, 7], [20, 5], [16, 4], [9, 3], [12, 2], [28, 7]]; // [spolu, po koľko]
+const UD_FAMILY = [[4, 2], [3, 2], [5, 2], [7, 2], [3, 4], [2, 6], [5, 3], [4, 5]];       // a · b = p → p : b, p : a
+const UD_ZERO_ONE_TEN = [[5, 1], [8, 1], [4, 1], [2, 1], [6, 1], [0, 8], [0, 1], [0, 10], [0, 5],
+                         [90, 10], [10, 10], [50, 10], [70, 10], [100, 10], [30, 10], [40, 10]];
+
+function buildUvDelFacts() {
+  const facts = [];
+  UD_SHARE.forEach(([n, k], i) => facts.push({
+    key: `ud:rz:${n}:${k}`, kind: 'rz', n, k, ctx: UD_CTX[i % UD_CTX.length], ans: n / k,
+    label: `${n} do ${k}`, solved: `${n} : ${k} = ${n / k}`,
+  }));
+  UD_MEASURE.forEach(([n, b], i) => facts.push({
+    key: `ud:po:${n}:${b}`, kind: 'po', n, b, ctx: UD_CTX[i % UD_CTX.length], ans: n / b,
+    label: `${n} po ${b}`, solved: `${n} : ${b} = ${n / b}`,
+  }));
+  UD_FAMILY.forEach(([a, b]) => {
+    const p = a * b;
+    [[b, a], [a, b]].forEach(([d, ans]) => facts.push({
+      key: `ud:sv:${p}:${d}`, kind: 'sv', a, b, p, d, ans,
+      label: `${p} : ${d}`, solved: `${a} · ${b} = ${p}, ${p} : ${d} = ${ans}`,
+    }));
+  });
+  UD_ZERO_ONE_TEN.forEach(([a, b]) => facts.push({
+    key: `ud:k:${a}:${b}`, kind: 'k', a, b, ans: a / b, label: `${a} : ${b}`, solved: `${a} : ${b} = ${a / b}`,
+  }));
+  return facts;
+}
+
+// n voľných guličiek (ešte nerozdelených) v mriežke po cols
+function looseDots(n, cols = 10) {
+  const box = el('div', 'loose');
+  box.style.gridTemplateColumns = `repeat(${Math.min(n, cols)}, auto)`;
+  for (let i = 0; i < n; i++) box.appendChild(el('div', 'dot'));
+  return box;
+}
+// n guličiek → k prázdnych tanierov
+function shareSetup(n, k) {
+  const pair = el('div', 'pair');
+  pair.appendChild(looseDots(n, 5));
+  pair.appendChild(el('span', '', '→'));
+  pair.appendChild(dotGroups(k, 0));
+  return pair;
+}
+
+const UVDEL = {
+  id: 'uvdel',
+  icon: '🍬',
+  title: 'Úvod do delenia',
+  desc: 'Delenie je rozdeľovanie na rovnaké časti.',
+  modes: [
+    { id: 'rz', sym: '1', name: 'Rozdeľ', theory: () => {
+      const pair = el('div', 'pair');
+      pair.style.flexDirection = 'column';
+      pair.appendChild(looseDots(8));
+      pair.appendChild(el('span', '', '↓'));
+      pair.appendChild(dotGroups(2, 4));
+      return theory([
+        ['', 'Rozdeľ 8 ceruziek do 2 peračníkov tak, aby v každom bolo rovnako. Koľko ceruziek je v každom?'],
+        pair,
+        ['formula', '8 : 2 = 4'],
+        ['', 'Čítame: <b>osem delené dva sa rovná štyri</b>. V každom peračníku sú 4 ceruzky.'],
+        ['rule', 'Delenie je rozdeľovanie celku na rovnaké časti.'],
+      ]);
+    } },
+    { id: 'po', sym: '2', name: 'Po koľko', theory: () => theory([
+      ['', 'Máme 12 cukríkov. Na každý tanierik dáme po 4. Koľko tanierikov treba?'],
+      dotGroups(3, 4),
+      ['formula', '12 : 4 = 3'],
+      ['', 'Potrebujeme <b>3 tanieriky</b>.'],
+      ['rule', 'Delením zistíme aj to, koľko rovnakých skupín vznikne.'],
+    ]) },
+    { id: 'sv', sym: '3', name: 'Násobenie', theory: () => theory([
+      dotGroups(4, 2),
+      ['formula', '4 · 2 = 8'],
+      ['formula', '8 : 2 = 4 &nbsp;&nbsp; 8 : 4 = 2'],
+      ['rule', 'Z jedného príkladu na násobenie vieme dva príklady na delenie.'],
+      ['', 'Keď nevieš, koľko je 8 : 2, spýtaj sa: <b>koľkokrát 2 je 8?</b>'],
+    ]) },
+    { id: 'k', sym: '4', name: '0, 1, 10', theory: () => theory([
+      ['rule', 'Delenie 1: výsledok je to isté číslo.'],
+      ['formula', '5 : 1 = 5'],
+      ['rule', 'Delenie 10: číslo bez nuly na konci.'],
+      ['formula', '50 : 10 = 5'],
+      ['rule', 'Nula delená číslom je vždy 0.'],
+      ['formula', '0 : 4 = 0'],
+      ['rule', 'Deliť nulou nemá zmysel!'],
+    ]) },
+    { id: 'mix', sym: '1–4', name: 'Všetko' },
+  ],
+  progressive: true,
+  facts: buildUvDelFacts(),
+  trophy: m => m === 'mix' ? 'Úvod do delenia už vieš! Môžeš ísť na delilku.' : null,
+  view(f) {
+    if (f.kind === 'rz') return {
+      prompt: `Rozdeľ ${f.n} ${f.ctx.item(f.n)} rovnako do ${f.k} ${f.ctx.cont}. Koľko ${f.ctx.itemGen} bude ${f.ctx.inEach}?`,
+      pic: shareSetup(f.n, f.k),
+      parts: [`${f.n} : ${f.k} =`, ANS], size: 'mid',
+    };
+    if (f.kind === 'po') return {
+      prompt: `Máme ${f.n} ${f.ctx.item(f.n)}. ${f.ctx.putEach} dáme po ${f.b}. Koľko ${f.ctx.cont} treba?`,
+      pic: looseDots(f.n),
+      parts: [`${f.n} : ${f.b} =`, ANS], size: 'mid',
+    };
+    if (f.kind === 'sv') return {
+      prompt: 'Pomôž si násobením.', formula: `${f.a} · ${f.b} = ${f.p}`,
+      parts: [`${f.p} : ${f.d} =`, ANS], size: 'mid',
+    };
+    return { parts: [`${f.a} : ${f.b}`, '=', ANS], size: f.a >= 100 ? 'mid' : '' };
+  },
+  hint(f) {
+    if (f.kind === 'rz') return {
+      text: `Rozdávaj do ${f.k} skupín po jednej, kým sa neminú. Koľko je v jednej skupine?`,
+      node: dotGroups(f.k, f.n / f.k),
+    };
+    if (f.kind === 'po') return {
+      text: `Odkladaj po ${f.b}, kým sa neminú. Koľko kôpok máš?`,
+      node: dotGroups(f.n / f.b, f.b),
+    };
+    if (f.kind === 'sv') return {
+      text: `Koľkokrát ${f.d} je ${f.p}? Pozri sa na násobenie hore.`,
+      node: dotGroups(f.a, f.b),
+    };
+    const [a, b] = [f.a, f.b];
+    if (a === 0) return { text: 'Nemáme nič, čo by sme rozdelili. V každej skupine nie je nič.', node: dotGroups(b, 0) };
+    if (b === 1) return { text: `${a} ${plural(a, 'kvet', 'kvety', 'kvetov')} dávame po jednom do vázy. Koľko váz treba?`, node: dotGroups(a, 1) };
+    const n = a / 10;
+    return { text: `${a} korálikov navliekame po 10 na šnúrky. Koľko šnúrok treba?`, node: blocks(n, 0, true) };
+  },
+};
+
+// Poradie v menu podľa učebnice
+const SECTIONS = [
+  { label: 'Zopakuj si', topics: [DJ, RADY] },
+  { label: 'Násobenie a delenie', topics: [UVOD, UVDEL, NASOB] },
+];
+const TOPICS = Object.fromEntries(SECTIONS.flatMap(s => s.topics).map(t => [t.id, t]));
 
 // ===== Uložený pokrok =====
 let stats = {};
@@ -332,6 +1000,7 @@ function levelOf(key) {
   if (s.streak >= 3) return 'mastered';
   return 'learning';
 }
+
 // ===== Výber úloh =====
 const MIN_REVIEW = 2; // koľko zvládnutých príkladov sa v kole vždy zopakuje (ak nejaké sú)
 
@@ -342,13 +1011,14 @@ function shuffle(arr) {
   }
   return arr;
 }
-function poolFor(mode) {
-  return ALL_FACTS.filter(f => mode === 'mix' || f.kind === mode);
+function poolFor(t, m) {
+  return t.facts.filter(f => m === 'mix' || f.kind === m);
 }
+function allMastered(t, m) { return poolFor(t, m).every(f => levelOf(f.key) === 'mastered'); }
 // Nezvládnuté príklady majú v kole isté miesto (červené, potom žlté, potom sivé),
 // zvyšok doplnia zvládnuté na zopakovanie. Nakoniec sa poradie zamieša.
-function pickSession(mode) {
-  const pool = poolFor(mode);
+function pickSession(t, m) {
+  const pool = poolFor(t, m);
   const byLevel = lvl => shuffle(pool.filter(f => levelOf(f.key) === lvl));
   const mastered = byLevel('mastered');
   const todo = [...byLevel('weak'), ...byLevel('learning'), ...byLevel('new')];
@@ -385,64 +1055,134 @@ const sndMode = () => beep([600, 800], 0.06, 0.12);
 const sndStart = () => beep([523, 659, 784], 0.09, 0.15);
 const sndWin =() => beep([523, 659, 784, 1047], 0.13);
 
-// ===== Pomocné =====
-const $ = id => document.getElementById(id);
-function show(screen) {
-  ['home', 'game', 'end'].forEach(s => $(s).classList.toggle('hidden', s !== screen));
-}
-function plural(n, one, few, many) {
-  if (n === 1) return one;
-  if (n >= 2 && n <= 4) return few;
-  return many;
-}
-function fmt(f) { return `${f.a} ${f.op} ${f.b}`; }
-function restartAnim(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+// ===== Menu =====
+let topic = NASOB;
+const modeOf = {}; // zvolený krok pre každú tému
 
-// ===== Úvodná obrazovka =====
-let mode = 'mix';
-document.querySelectorAll('.mode').forEach(btn => {
-  btn.addEventListener('click', () => {
-    mode = btn.dataset.mode;
-    sndMode();
-    document.querySelectorAll('.mode').forEach(b => b.classList.toggle('active', b === btn));
-  });
-});
-function renderHome() {
-  $('tableLabel').textContent = TABLES.join(', ');
-  const render = (el, kind) => {
-    el.innerHTML = '';
-    ALL_FACTS.filter(f => f.kind === kind).forEach(f => {
-      const d = document.createElement('span');
-      const s = statOf(f.key);
-      d.className = 'fact ' + levelOf(f.key);
-      d.textContent = fmt(f) + (s.lastHint ? ' 💡' : '');
-      if (s.hints) d.title = `Pomôcka použitá ${s.hints}×`;
-      el.appendChild(d);
+function renderMenu() {
+  const list = $('topicList');
+  list.innerHTML = '';
+  SECTIONS.forEach(sec => {
+    list.appendChild(el('div', 'section-label', sec.label));
+    sec.topics.forEach(t => {
+      const done = t.facts.filter(f => levelOf(f.key) === 'mastered').length;
+      const btn = el('button', 'topic');
+      btn.appendChild(el('div', 'topic-icon', t.icon));
+      const body = el('div', 'topic-body');
+      body.appendChild(el('div', 'topic-name', t.title));
+      body.appendChild(el('div', 'topic-desc', t.desc));
+      const bar = el('div', 'topic-bar'), fill = el('div');
+      fill.style.width = (done / t.facts.length * 100) + '%';
+      bar.appendChild(fill);
+      body.appendChild(bar);
+      body.appendChild(el('div', 'topic-count', `Vieš ${done} z ${t.facts.length}`));
+      btn.appendChild(body);
+      btn.addEventListener('click', () => { sndMode(); topic = t; renderHome(); });
+      list.appendChild(btn);
     });
-  };
-  render($('factsMul'), 'mul');
-  render($('factsDiv'), 'div');
+  });
+  show('menu');
+}
+
+// ===== Obrazovka témy =====
+// Pri témach s postupom sa ponúkne prvý krok, ktorý ešte nie je celý zvládnutý.
+function defaultMode(t) {
+  if (!t.progressive) return t.defaultMode;
+  const next = t.modes.find(m => m.id !== 'mix' && !allMastered(t, m.id));
+  return next ? next.id : 'mix';
+}
+function currentMode() { return modeOf[topic.id]; }
+
+function renderTheory() {
+  const md = topic.modes.find(x => x.id === currentMode());
+  const box = $('theory');
+  box.innerHTML = '';
+  if (md && md.theory) box.appendChild(md.theory());
+  $('theoryCard').classList.toggle('hidden', !(md && md.theory));
+}
+
+function renderHome() {
+  const m = modeOf[topic.id];
+  if (!m || (topic.progressive && m !== 'mix' && allMastered(topic, m))) modeOf[topic.id] = defaultMode(topic);
+  $('topicTitle').textContent = topic.title;
+  $('topicSub').textContent = topic.desc;
+
+  const modes = $('modes');
+  modes.innerHTML = '';
+  topic.modes.forEach(md => {
+    const btn = el('button', 'mode');
+    btn.classList.toggle('active', md.id === currentMode());
+    btn.classList.toggle('done', md.id !== 'mix' && allMastered(topic, md.id));
+    btn.appendChild(el('span', 'sym', md.sym));
+    btn.appendChild(document.createTextNode(md.name));
+    btn.addEventListener('click', () => {
+      modeOf[topic.id] = md.id;
+      sndMode();
+      modes.querySelectorAll('.mode').forEach(b => b.classList.toggle('active', b === btn));
+      renderTheory();
+    });
+    modes.appendChild(btn);
+  });
+
+  renderTheory();
+
+  const groups = $('factGroups');
+  groups.innerHTML = '';
+  topic.modes.filter(md => md.id !== 'mix').forEach(md => {
+    groups.appendChild(el('div', 'grid-label', md.name));
+    const box = el('div', 'facts');
+    poolFor(topic, md.id).forEach(f => {
+      const s = statOf(f.key);
+      const d = el('span', 'fact ' + levelOf(f.key), f.label + (s.lastHint ? ' 💡' : ''));
+      if (s.hints) d.title = `Pomôcka použitá ${s.hints}×`;
+      box.appendChild(d);
+    });
+    groups.appendChild(box);
+  });
   show('home');
 }
 
 // ===== Hra =====
 let queue = [], idx = 0, current = null, input = '', attempt = 0, state = 'input', hintUsed = false;
 let starCount = 0, total = 0, mistakes = [], hinted = [], results = [], requeued = new Set();
+const answerEl = $('answer');
 
 function startGame() {
   sndStart();
-  queue = pickSession(mode);
+  queue = pickSession(topic, currentMode());
   total = queue.length;
   idx = 0; starCount = 0; mistakes = []; hinted = []; results = []; requeued = new Set();
   show('game');
   nextQuestion();
 }
 
+function renderProblem(f) {
+  const v = topic.view(f);
+  $('prompt').textContent = v.prompt || '';
+  $('prompt').classList.toggle('hidden', !v.prompt);
+  $('formula').innerHTML = v.formula || '';
+  $('formula').classList.toggle('hidden', !v.formula);
+  const pic = $('pic');
+  pic.innerHTML = '';
+  if (v.pic) pic.appendChild(v.pic);
+  pic.classList.toggle('hidden', !v.pic);
+  const prob = $('problem');
+  prob.className = 'problem' + (v.size ? ' ' + v.size : '');
+  prob.innerHTML = '';
+  v.parts.forEach(p => {
+    if (p === ANS) { prob.appendChild(answerEl); return; }
+    const s = el('span');
+    s.innerHTML = p;
+    prob.appendChild(s);
+  });
+}
+
 function nextQuestion() {
   if (idx >= queue.length) return endGame();
   current = queue[idx];
   input = ''; attempt = 0; state = 'input'; hintUsed = false;
-  $('qText').textContent = fmt(current);
+  renderProblem(current);
+  $('keypad').classList.toggle('cmp', current.input === 'cmp');
   $('feedback').textContent = ''; $('feedback').className = 'feedback';
   $('hint').classList.add('hidden');
   $('hintBtn').classList.remove('hidden');
@@ -454,9 +1194,8 @@ function nextQuestion() {
 }
 
 function renderAnswer(cls = '') {
-  const a = $('answer');
-  a.textContent = input;
-  a.className = 'answer' + (input === '' ? ' empty' : '') + (cls ? ' ' + cls : '');
+  answerEl.textContent = input;
+  answerEl.className = 'answer' + (input === '' ? ' empty' : '') + (cls ? ' ' + cls : '');
 }
 
 function press(k) {
@@ -464,6 +1203,9 @@ function press(k) {
   if (state === 'reveal') { if (k === 'go') { idx++; nextQuestion(); } return; }
   if (k === 'del') { if (input) sndDel(); input = input.slice(0, -1); renderAnswer(); return; }
   if (k === 'go') { submit(); return; }
+  const cmp = current.input === 'cmp';
+  if (cmp !== '<=>'.includes(k)) return; // pri porovnávaní len znaky, inak len číslice
+  if (cmp) { sndKey(5); input = k; renderAnswer(); return; }
   if (input.length >= 3) return;
   sndKey(k);
   if (input === '0') input = '';
@@ -472,11 +1214,11 @@ function press(k) {
 }
 
 function submit() {
-  if (input === '') { restartAnim($('answer'), 'shake'); return; }
-  const val = parseInt(input, 10);
+  if (input === '') { restartAnim(answerEl, 'shake'); return; }
+  const ok = current.input === 'cmp' ? input === current.ans : parseInt(input, 10) === current.ans;
   const fb = $('feedback');
 
-  if (val === current.ans) {
+  if (ok) {
     const firstTry = attempt === 0;
     const result = !firstTry ? 'bad' : hintUsed ? 'hint' : 'ok';
     if (idx < total) {
@@ -485,7 +1227,7 @@ function submit() {
       results.push(result);
       record(current.key, result);
     }
-    renderAnswer('ok'); restartAnim($('answer'), 'pop');
+    renderAnswer('ok'); restartAnim(answerEl, 'pop');
     fb.textContent = PRAISE[Math.floor(Math.random() * PRAISE.length)] +
       (result === 'ok' ? ' ⭐' : result === 'hint' ? ' (s pomôckou 💡)' : '');
     fb.className = 'feedback ok';
@@ -499,7 +1241,7 @@ function submit() {
   attempt++;
   sndBad();
   if (attempt === 1) {
-    renderAnswer('bad'); restartAnim($('answer'), 'shake');
+    renderAnswer('bad'); restartAnim(answerEl, 'shake');
     fb.textContent = 'Skoro! Skús to ešte raz.';
     fb.className = 'feedback bad';
     showHint();
@@ -511,8 +1253,8 @@ function submit() {
     if (!mistakes.includes(current)) mistakes.push(current);
     if (!requeued.has(current.key)) { requeued.add(current.key); queue.push(current); }
     input = String(current.ans);
-    renderAnswer('reveal'); restartAnim($('answer'), 'pop');
-    fb.textContent = `Správne je ${current.ans}. Zapamätaj si to!`;
+    renderAnswer('reveal'); restartAnim(answerEl, 'pop');
+    fb.textContent = current.input === 'cmp' ? `Správne je ${current.solved}.` : `Správne je ${current.ans}. Zapamätaj si to!`;
     fb.className = 'feedback reveal';
     showHint();
     $('goKey').textContent = 'Ďalej'; $('goKey').classList.add('next');
@@ -521,30 +1263,11 @@ function submit() {
 }
 
 function showHint() {
-  const f = current;
-  const groups = $('groups');
-  groups.innerHTML = '';
-  let count, size, text;
-  if (f.op === '·') {
-    count = f.a; size = f.b;
-    text = `${f.a} ${plural(f.a, 'skupina', 'skupiny', 'skupín')} po ${f.b}. Koľko je to spolu?`;
-  } else {
-    count = f.b; size = f.a / f.b;
-    text = f.b === 1
-      ? `${f.a} ${plural(f.a, 'gulička', 'guličky', 'guličiek')} v 1 skupine. Koľko ich je v nej?`
-      : `Rozdeľ ${f.a} ${plural(f.a, 'guličku', 'guličky', 'guličiek')} do ${f.b} rovnakých skupín. Koľko je v jednej?`;
-  }
-  for (let g = 0; g < count; g++) {
-    const grp = document.createElement('div');
-    grp.className = 'group';
-    for (let d = 0; d < size; d++) {
-      const dot = document.createElement('div');
-      dot.className = 'dot';
-      grp.appendChild(dot);
-    }
-    groups.appendChild(grp);
-  }
-  $('hintText').textContent = text;
+  const h = topic.hint(current);
+  $('hintText').textContent = h.text;
+  const body = $('hintBody');
+  body.innerHTML = '';
+  if (h.node) body.appendChild(h.node);
   $('hint').classList.remove('hidden');
   $('hintBtn').classList.add('hidden');
 }
@@ -552,39 +1275,30 @@ function showHint() {
 function endGame() {
   $('progressBar').style.width = '100%';
   sndWin();
+  const m = currentMode();
   const ratio = starCount / total;
-  const allMastered = poolFor(mode).every(f => levelOf(f.key) === 'mastered');
-  const what = { mul: 'Násobenie', div: 'Delenie', mix: 'Násobenie aj delenie' }[mode];
-  $('endTitle').textContent = allMastered
-    ? `🏆 ${what} s číslom ${TABLES.join(', ')} už vieš celé!`
+  let trophy = topic.trophy && topic.trophy(m);
+  if (!trophy) trophy = m === 'mix' ? `${topic.title} už vieš!` : `${topic.modes.find(md => md.id === m).name}: všetko vieš!`;
+  $('endTitle').textContent = allMastered(topic, m)
+    ? `🏆 ${trophy}`
     : ratio === 1 ? 'Úžasné! Všetko správne!' : ratio >= 0.7 ? 'Výborne!' : 'Dobrá práca!';
   $('endStars').textContent = results.map(r => ({ ok: '⭐', hint: '💡', bad: '☆' })[r]).join('');
   $('endScore').textContent = `${starCount} z ${total} hviezdičiek` +
     (hinted.length ? `, ${hinted.length}× s pomôckou` : '');
-  const hc = $('hintedCard'), hl = $('hintedList');
-  hl.innerHTML = '';
-  hinted.forEach(f => {
-    const s = document.createElement('span');
-    s.className = 'mistake';
-    s.textContent = `${fmt(f)} = ${f.ans}`;
-    hl.appendChild(s);
-  });
-  hc.classList.toggle('hidden', hinted.length === 0);
-  const mc = $('mistakesCard'), ml = $('mistakes');
-  ml.innerHTML = '';
-  mistakes.forEach(f => {
-    const s = document.createElement('span');
-    s.className = 'mistake';
-    s.textContent = `${fmt(f)} = ${f.ans}`;
-    ml.appendChild(s);
-  });
-  mc.classList.toggle('hidden', mistakes.length === 0);
+  const fill = (card, list, items) => {
+    list.innerHTML = '';
+    items.forEach(f => list.appendChild(el('span', 'mistake', f.solved)));
+    card.classList.toggle('hidden', items.length === 0);
+  };
+  fill($('hintedCard'), $('hintedList'), hinted);
+  fill($('mistakesCard'), $('mistakes'), mistakes);
   show('end');
 }
 
 // ===== Udalosti =====
 $('startBtn').addEventListener('click', startGame);
 $('againBtn').addEventListener('click', startGame);
+$('menuBtn').addEventListener('click', renderMenu);
 $('homeBtn').addEventListener('click', renderHome);
 $('endHomeBtn').addEventListener('click', renderHome);
 function closeResetModal() { $('resetModal').classList.add('hidden'); }
@@ -598,7 +1312,7 @@ $('resetYes').addEventListener('click', () => {
   stats = {};
   try { localStorage.removeItem(STORE_KEY); } catch (e) {}
   closeResetModal();
-  renderHome();
+  renderMenu();
 });
 $('hintBtn').addEventListener('click', () => { hintUsed = true; showHint(); });
 $('soundBtn').addEventListener('click', () => {
@@ -619,7 +1333,7 @@ document.addEventListener('keydown', e => {
     return;
   }
   let k = null;
-  if (/^[0-9]$/.test(e.key)) k = e.key;
+  if (/^[0-9<>=]$/.test(e.key)) k = e.key;
   else if (e.key === 'Backspace' || e.key === 'Delete') k = 'del';
   else if (e.key === 'Enter' || e.key === ' ') k = 'go';
   if (k === null) return;
@@ -629,7 +1343,7 @@ document.addEventListener('keydown', e => {
   press(k);
 });
 
-renderHome();
+renderMenu();
 
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
   navigator.serviceWorker.register('sw.js').catch(() => {});
