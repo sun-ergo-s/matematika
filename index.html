@@ -386,8 +386,8 @@
 
 <script>
 // ===== Nastavenia =====
-// Keď príde na rad ďalšie číslo násobilky, stačí ho pridať sem, napr. [2, 3].
-const TABLES = [2];
+// Každé číslo násobilky je v menu samostatná téma. Ďalšie číslo stačí pridať sem.
+const TABLES = [2, 3];
 const SESSION_LEN = 10;
 const STORE_KEY = 'matematika.stats.v1';
 
@@ -466,37 +466,42 @@ function buildMulFacts(k) {
   return facts;
 }
 
-const NASOB = {
-  id: 'nasob',
-  icon: '✖️',
-  title: 'Násobilka a delilka',
-  desc: `s číslom ${TABLES.join(', ')}`,
-  modes: [
-    { id: 'mul', sym: '·', name: 'Násobenie' },
-    { id: 'div', sym: ':', name: 'Delenie' },
-    { id: 'mix', sym: '· :', name: 'Všetko' },
-  ],
-  defaultMode: 'mix',
-  facts: TABLES.flatMap(buildMulFacts),
-  trophy(mode) {
-    const what = { mul: 'Násobenie', div: 'Delenie', mix: 'Násobenie aj delenie' }[mode];
-    return `${what} s číslom ${TABLES.join(', ')} už vieš celé!`;
-  },
-  view: f => ({ parts: [f.label, '=', ANS] }),
-  hint(f) {
-    let count, size, text;
-    if (f.op === '·') {
-      count = f.a; size = f.b;
-      text = `${f.a} ${plural(f.a, 'skupina', 'skupiny', 'skupín')} po ${f.b}. Koľko je to spolu?`;
-    } else {
-      count = f.b; size = f.a / f.b;
-      text = f.b === 1
-        ? `${f.a} ${plural(f.a, 'gulička', 'guličky', 'guličiek')} v 1 skupine. Koľko ich je v nej?`
-        : `Rozdeľ ${f.a} ${plural(f.a, 'guličku', 'guličky', 'guličiek')} do ${f.b} rovnakých skupín. Koľko je v jednej?`;
-    }
-    return { text, node: dotGroups(count, size) };
-  },
-};
+// Každé číslo násobilky je samostatná téma v menu
+function makeNasob(k) {
+  return {
+    id: k === 2 ? 'nasob' : `nasob${k}`, // 2 má pôvodné id
+    icon: '✖️',
+    title: `Násobilka a delilka ${k}`,
+    desc: `s číslom ${k}`,
+    modes: [
+      { id: 'mul', sym: '·', name: 'Násobenie' },
+      { id: 'div', sym: ':', name: 'Delenie' },
+      { id: 'mix', sym: '· :', name: 'Všetko' },
+    ],
+    defaultMode: 'mix',
+    facts: buildMulFacts(k),
+    trophy(mode) {
+      const what = { mul: 'Násobenie', div: 'Delenie', mix: 'Násobenie aj delenie' }[mode];
+      return `${what} s číslom ${k} už vieš celé!`;
+    },
+    view: f => ({ parts: [f.label, '=', ANS] }),
+    hint: mulHint,
+  };
+}
+function mulHint(f) {
+  let count, size, text;
+  if (f.op === '·') {
+    count = f.a; size = f.b;
+    text = `${f.a} ${plural(f.a, 'skupina', 'skupiny', 'skupín')} po ${f.b}. Koľko je to spolu?`;
+  } else {
+    count = f.b; size = f.a / f.b;
+    text = f.b === 1
+      ? `${f.a} ${plural(f.a, 'gulička', 'guličky', 'guličiek')} v 1 skupine. Koľko ich je v nej?`
+      : `Rozdeľ ${f.a} ${plural(f.a, 'guličku', 'guličky', 'guličiek')} do ${f.b} rovnakých skupín. Koľko je v jednej?`;
+  }
+  return { text, node: dotGroups(count, size) };
+}
+const NASOB = TABLES.map(makeNasob);
 
 // --- Desiatky a jednotky (učebnica, Zopakuj si, úloha 3) ---
 // Postup: 1. obrázok → číslo, 2. číslo → koľko desiatok / jednotiek, 3. zápis D a J → číslo
@@ -972,7 +977,7 @@ const UVDEL = {
 // Poradie v menu podľa učebnice
 const SECTIONS = [
   { label: 'Zopakuj si', topics: [DJ, RADY] },
-  { label: 'Násobenie a delenie', topics: [UVOD, UVDEL, NASOB] },
+  { label: 'Násobenie a delenie', topics: [UVOD, UVDEL, ...NASOB] },
 ];
 const TOPICS = Object.fromEntries(SECTIONS.flatMap(s => s.topics).map(t => [t.id, t]));
 
@@ -1056,7 +1061,7 @@ const sndStart = () => beep([523, 659, 784], 0.09, 0.15);
 const sndWin =() => beep([523, 659, 784, 1047], 0.13);
 
 // ===== Menu =====
-let topic = NASOB;
+let topic = NASOB[0];
 const modeOf = {}; // zvolený krok pre každú tému
 
 function renderMenu() {

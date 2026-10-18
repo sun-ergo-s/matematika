@@ -29,7 +29,7 @@ Menu je rozdelené do sekcií podľa učebnice. Každá téma má kroky v porad�
 | Číselné rady (`rad`) | 4 – Zopakuj si, úloha 8 | Dopredu (±1, 2, 5, 10), Dozadu, Ťažšie (±3, ±4, +5 nie od násobku 5) |
 | Úvod do násobenia (`uvod`) | 9–12 | Skupiny (obrázok → súčet → súčin), Sčítanie (`7+7+7 = ?·7`), Výmena (`6·9 = 9·?` a porovnávanie `<, >, =`), 0, 1, 10 |
 | Úvod do delenia (`uvdel`) | 13–15 | Rozdeľ (koľko v jednej skupine), Po koľko (koľko skupín), Násobenie (`4·2=8 → 8:4=?`), 0, 1, 10 |
-| Násobilka a delilka (`nasob`) | – | Násobenie, Delenie, Všetko (zatiaľ len číslo 2) |
+| Násobilka a delilka 2 (`nasob`), 3 (`nasob3`) | – | Násobenie, Delenie, Všetko. Každé číslo z `TABLES` je samostatná téma (`makeNasob(k)`). |
 
 Ďalšia téma v učebnici je **Párne a nepárne číslo** (PDF s. 16). Text PDF sa dá vytiahnuť cez `pypdf` (`PYTHONIOENCODING=utf-8`). Obrázky z PDF sa na tomto počítači nedajú vykresliť, chýba poppler.
 
@@ -41,7 +41,7 @@ Skript je rozdelený do sekcií označených `// ===== … =====`.
 
 ### Témy
 
-Každá téma je objekt (`DJ`, `RADY`, `UVOD`, `UVDEL`, `NASOB`) s poliami:
+Každá téma je objekt (`DJ`, `RADY`, `UVOD`, `UVDEL`; `NASOB` je pole tém z `makeNasob`) s poliami:
 
 - `id`, `icon`, `title`, `desc`
 - `modes`: `{ id, sym, name, theory? }`, kde posledný je `mix`. `theory()` vráti obsah karty „📘 Zapamätaj si!“ na obrazovke témy.
@@ -59,7 +59,7 @@ Každá téma je objekt (`DJ`, `RADY`, `UVOD`, `UVDEL`, `NASOB`) s poliami:
 
 Poradie v menu určuje `SECTIONS`.
 
-**Kľúče príkladov musia byť jedinečné naprieč témami.** Násobilka má pôvodné kľúče (`2·7`, `14:7`), aby sa zachoval starý pokrok. Nové témy majú predpony `dj:`, `rad:`, `un:` a `ud:`.
+**Kľúče príkladov musia byť jedinečné naprieč témami.** Násobilka má pôvodné kľúče (`2·7`, `14:7`), aby sa zachoval starý pokrok. Výnimka: rovnaký príklad v dvoch číslach násobilky (`2·3`, `6:3` …) má zámerne spoločný kľúč, a teda aj spoločný pokrok. Nové témy majú predpony `dj:`, `rad:`, `un:` a `ud:`.
 
 Pomocné kreslenie:
 
@@ -163,6 +163,6 @@ Na kontrolu celej aplikácie v prehliadači sa osvedčil `puppeteer-core` s nain
 ## Možné ďalšie kroky (zatiaľ nezadané)
 
 - Ďalšie témy z učebnice: Párne a nepárne číslo (PDF s. 16) a ďalej.
-- Pridať ďalšie čísla násobilky (3, 4, …) cez `TABLES`. Pri viacerých číslach treba skontrolovať veľkosť kola a text trofeje.
+- Pridať ďalšie čísla násobilky (4, 5, …) cez `TABLES`.
 - Premenovať aplikáciu v manifeste a v `apple-mobile-web-app-title` z „Násobilka“ na „Matematika“.
 - Export a import pokroku do súboru, prípadne synchronizácia medzi zariadeniami. Pokrok je teraz len v `localStorage` jedného prehliadača.
