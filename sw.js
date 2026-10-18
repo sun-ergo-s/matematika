@@ -1,6 +1,6 @@
 // Service worker: aplikácia funguje aj bez internetu.
 // Stránka sa načíta vždy najprv zo siete (aby sa hneď prejavili úpravy), offline z pamäte.
-const CACHE = 'matematika-v1';
+const CACHE = 'matematika-v2';
 const FILES = [
   './',
   './manifest.webmanifest',
@@ -42,9 +42,10 @@ self.addEventListener('fetch', e => {
 
   if (url.origin !== location.origin) return;
 
-  // vlastné súbory: najprv sieť, pri výpadku pamäť
+  // vlastné súbory: najprv sieť (mimo pamäte prehliadača, aby sa úpravy prejavili hneď),
+  // pri výpadku pamäť
   e.respondWith(
-    fetch(e.request).then(res => {
+    fetch(e.request.url, { cache: 'no-cache' }).then(res => {
       if (res.ok) {
         const copy = res.clone();
         caches.open(CACHE).then(c => c.put(e.request, copy));

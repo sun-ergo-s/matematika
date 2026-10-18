@@ -117,8 +117,9 @@ Pomáhajú pri tom media queries `max-width: 380px` a `max-height: 820px`.
 
 ## PWA a service worker
 
-- `sw.js` načítava vlastné súbory najprv zo siete a pri výpadku z cache, takže úpravy sa prejavia hneď. Google Fonts berie najprv z cache.
-- Názov cache je `matematika-v1`. Pri pridaní nového statického súboru ho doplňte do `FILES`. Ak ide o zásadnú zmenu, zvýšte verziu cache.
+- `sw.js` načítava vlastné súbory najprv zo siete (s `cache: 'no-cache'`, lebo GitHub Pages posiela `max-age=600`) a pri výpadku z cache. Google Fonts berie najprv z cache.
+- **Aktualizácia:** nainštalovaná aplikácia (najmä na iPhone) ostáva v pamäti a sama sa nenačíta znova. Preto stránka pri štarte, pri návrate do aplikácie (`visibilitychange`) a každých 30 minút stiahne `./` a porovná ho s textom stiahnutým pri štarte. Ak sa líši, tlačidlo „🔄 Aktualizovať“ v menu zazelená a pulzuje. Klik stránku znova načíta. Tlačidlo funguje aj bez zistenej zmeny.
+- Názov cache je `matematika-v2`. Pri pridaní nového statického súboru ho doplňte do `FILES`. Ak ide o zásadnú zmenu, zvýšte verziu cache.
 - Service worker sa registruje len cez http(s), pri otvorení cez `file://` nie.
 - Na iPhone má aplikácia pridaná na plochu vlastné úložisko, oddelené od Safari. Ikona na ploche sa po zmene neaktualizuje sama.
 

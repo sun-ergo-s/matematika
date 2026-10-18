@@ -67,6 +67,15 @@
     font-size: 16px; font-weight: 800; background: var(--bad); color: #fff; box-shadow: 0 4px 0 #b42d2d;
   }
   .reset-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #b42d2d; }
+  .menu-foot { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 4px; }
+  .menu-foot .reset-btn { margin-top: 0; }
+  .update-btn { background: #fff; color: var(--primary-dark); box-shadow: 0 4px 0 #d9d3ef; }
+  .update-btn:active { box-shadow: 0 1px 0 #d9d3ef; }
+  .update-btn.new {
+    background: var(--ok); color: #fff; box-shadow: 0 4px 0 #168a52;
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+  @keyframes pulse { 50% { transform: scale(1.06); } }
 
   .modal-backdrop {
     position: fixed; inset: 0; background: rgba(45, 42, 50, .45);
@@ -273,7 +282,10 @@
     <h1>Matematika</h1>
     <p class="sub">pre 3. ročník</p>
     <div id="topicList" class="screen"></div>
-    <button class="reset-btn" id="resetBtn">🗑️ Vymazať pamäť</button>
+    <div class="menu-foot">
+      <button class="reset-btn update-btn" id="updateBtn">🔄 Aktualizovať</button>
+      <button class="reset-btn" id="resetBtn">🗑️ Vymazať pamäť</button>
+    </div>
   </section>
 
   <!-- TÉMA -->
@@ -1353,6 +1365,37 @@ renderMenu();
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
   navigator.serviceWorker.register('sw.js').catch(() => {});
 }
+
+// ===== Aktualizácia =====
+// Nainštalovaná aplikácia (najmä na iPhone) ostáva v pamäti a sama sa nenačíta znova.
+// Pri návrate do aplikácie porovnáme stránku na serveri s tou, ktorá beží.
+// Ak sa líši, tlačidlo „Aktualizovať“ v menu zazelená.
+let loadedPage = null;
+function fetchPage() {
+  return fetch('./?check=' + Date.now(), { cache: 'no-store' })
+    .then(r => r.ok ? r.text() : null).catch(() => null);
+}
+function checkUpdate() {
+  if (!location.protocol.startsWith('http')) return;
+  fetchPage().then(text => {
+    if (!text) return;
+    if (loadedPage === null) { loadedPage = text; return; }
+    if (text !== loadedPage) {
+      const b = $('updateBtn');
+      b.classList.add('new');
+      b.textContent = '✨ Nová verzia! Aktualizovať';
+    }
+  });
+}
+checkUpdate();
+document.addEventListener('visibilitychange', () => { if (!document.hidden) checkUpdate(); });
+setInterval(checkUpdate, 30 * 60 * 1000);
+$('updateBtn').addEventListener('click', () => {
+  const b = $('updateBtn');
+  b.textContent = '⏳ Načítavam…';
+  // stiahnuť čerstvú stránku do pamäte prehliadača a potom ju znova načítať
+  fetchPage().then(() => location.reload());
+});
 </script>
 </body>
 </html>
